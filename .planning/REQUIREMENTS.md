@@ -16,13 +16,13 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### File Upload
 
-- [ ] **UPLD-01**: User can drag-and-drop zip file onto upload zone
-- [ ] **UPLD-02**: User can click button to open file picker as fallback
-- [ ] **UPLD-03**: User sees progress bar during upload
-- [ ] **UPLD-04**: System rejects non-zip files with clear message
-- [ ] **UPLD-05**: System rejects oversized files with clear limit shown
-- [ ] **UPLD-06**: User can cancel in-progress upload
-- [ ] **UPLD-07**: User can remove/replace file before submission
+- [x] **UPLD-01**: User can drag-and-drop zip file onto upload zone
+- [x] **UPLD-02**: User can click button to open file picker as fallback
+- [x] **UPLD-03**: User sees progress bar during upload
+- [x] **UPLD-04**: System rejects non-zip files with clear message
+- [x] **UPLD-05**: System rejects oversized files with clear limit shown
+- [x] **UPLD-06**: User can cancel in-progress upload
+- [x] **UPLD-07**: User can remove/replace file before submission
 - [ ] **UPLD-08**: User can preview zip contents (file listing) before submission
 
 ### Validation Engine
@@ -91,13 +91,13 @@ Which phases cover which requirements. Updated by create-roadmap.
 | AUTH-02 | 1 - Foundation | Complete |
 | AUTH-03 | 1 - Foundation | Complete |
 | AUTH-04 | 1 - Foundation | Complete |
-| UPLD-01 | 2 - File Upload Core | Pending |
-| UPLD-02 | 2 - File Upload Core | Pending |
-| UPLD-03 | 2 - File Upload Core | Pending |
-| UPLD-04 | 2 - File Upload Core | Pending |
-| UPLD-05 | 2 - File Upload Core | Pending |
-| UPLD-06 | 2 - File Upload Core | Pending |
-| UPLD-07 | 2 - File Upload Core | Pending |
+| UPLD-01 | 2 - File Upload Core | Complete |
+| UPLD-02 | 2 - File Upload Core | Complete |
+| UPLD-03 | 2 - File Upload Core | Complete |
+| UPLD-04 | 2 - File Upload Core | Complete |
+| UPLD-05 | 2 - File Upload Core | Complete |
+| UPLD-06 | 2 - File Upload Core | Complete |
+| UPLD-07 | 2 - File Upload Core | Complete |
 | UPLD-08 | 3 - Zip Validation Engine | Pending |
 | VALD-01 | 3 - Zip Validation Engine | Pending |
 | VALD-02 | 3 - Zip Validation Engine | Pending |
@@ -122,4 +122,4 @@ Which phases cover which requirements. Updated by create-roadmap.
 
 ---
 *Requirements defined: 2026-01-21*
-*Last updated: 2026-01-21 - Phase 1 requirements complete (AUTH-01 through AUTH-04)*
+*Last updated: 2026-01-21 - Phase 2 requirements complete (UPLD-01 through UPLD-07)*
