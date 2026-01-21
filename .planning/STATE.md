@@ -1,19 +1,19 @@
 # Project State: RecycleUI
 
 **Current Milestone:** v1.0 - Document Intake System
-**Current Phase:** 2 - File Upload Core (Complete)
-**Status:** Phase Complete - Ready for Phase 3
+**Current Phase:** 3 - Zip Validation Engine (In Progress)
+**Status:** Plan 1 of 2 complete
 
 ---
 
 ## Current Position
 
-Phase: 2 of 8 (File Upload Core) - COMPLETE
-Plan: 2 of 2 in current phase - COMPLETE
-Status: Phase 2 complete
-Last activity: 2026-01-21 - Completed 02-02-PLAN.md
+Phase: 3 of 8 (Zip Validation Engine)
+Plan: 1 of 2 in current phase
+Status: In progress
+Last activity: 2026-01-21 - Completed 03-01-PLAN.md
 
-Progress: █████████░ 21% (5/24 plans estimated)
+Progress: ██████████░ 25% (6/24 plans estimated)
 
 ---
 
@@ -23,7 +23,7 @@ Progress: █████████░ 21% (5/24 plans estimated)
 |-------|------|--------|-------|
 | 1 | Foundation | Complete | 3/3 |
 | 2 | File Upload Core | Complete | 2/2 |
-| 3 | Zip Validation Engine | Planned | 0/2 |
+| 3 | Zip Validation Engine | In Progress | 1/2 |
 | 4 | File Extraction & Storage | Pending | 0/0 |
 | 5 | History & Dashboard | Pending | 0/0 |
 | 6 | Admin Panel | Pending | 0/0 |
@@ -53,6 +53,9 @@ Progress: █████████░ 21% (5/24 plans estimated)
 | UserPathService pattern | Service class encapsulates path generation | 01-03 |
 | Livewire WithFileUploads trait | Native file handling for Filament pages | 02-01 |
 | Alpine.js for drag state | x-data tracks isDragging for visual feedback | 02-01 |
+| Case-sensitive file validation | Required files must match exact case | 03-01 |
+| Zip Slip prevention pattern | Check for `..` and `/` before extraction | 03-01 |
+| Validation returns structured array | {valid, errors, structure} for UI consumption | 03-01 |
 
 ### Technical Context
 
@@ -67,7 +70,7 @@ Progress: █████████░ 21% (5/24 plans estimated)
 
 ### Security Notes
 
-- Zip Slip prevention required (validate extracted paths)
+- Zip Slip prevention IMPLEMENTED in ZipValidatorService (validates paths before extraction)
 - Zip Bomb protection (100MB decompressed limit)
 - CVE-2025-27515 addressed (Laravel 11.48.0 installed)
 - Path sanitization for user full names
@@ -81,6 +84,8 @@ Progress: █████████░ 21% (5/24 plans estimated)
 - Custom Filament pages extend Page base class
 - Blade views in resources/views/filament/pages/
 - Alpine.js + Livewire for interactive file uploads
+- ZipValidatorService pattern: extract(), validate(), getStructure(), cleanup()
+- PHPUnit 11+ attributes (#[Test]) instead of doc-comment annotations
 
 ### Open Issues
 
@@ -93,9 +98,9 @@ Progress: █████████░ 21% (5/24 plans estimated)
 ## Session Continuity
 
 **Last session:** 2026-01-21
-**Stopped at:** Completed Phase 2 (File Upload Core)
+**Stopped at:** Completed 03-01-PLAN.md (ZipValidatorService)
 **Resume file:** None
-**Next action:** Execute Phase 3 (Zip Validation Engine)
+**Next action:** Execute 03-02-PLAN.md (Integration with upload flow)
 
 ---
 
