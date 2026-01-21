@@ -135,20 +135,78 @@
                 </div>
             @endif
 
+            {{-- Validation results --}}
+            @if($validationResult)
+                @if($validationResult['valid'])
+                    <div class="mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
+                        <div class="flex items-center">
+                            <x-heroicon-o-check-circle class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" />
+                            <span class="text-sm font-medium text-green-700 dark:text-green-300">
+                                Validation Passed - All folders contain required files
+                            </span>
+                        </div>
+                        <div class="mt-3 ml-7">
+                            <p class="text-xs text-green-600 dark:text-green-400">
+                                {{ count($validationResult['structure']) }} folder(s) validated successfully.
+                                Ready for extraction in Phase 4.
+                            </p>
+                        </div>
+                    </div>
+                @else
+                    <div class="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                        <div class="flex items-center">
+                            <x-heroicon-o-x-circle class="w-5 h-5 text-red-500 mr-2 flex-shrink-0" />
+                            <span class="text-sm font-medium text-red-700 dark:text-red-300">
+                                Validation Failed - Missing required files
+                            </span>
+                        </div>
+                        <div class="mt-3 space-y-3">
+                            @foreach($validationResult['errors'] as $folder => $errors)
+                                <div class="ml-7 p-3 bg-red-100 dark:bg-red-900/30 rounded">
+                                    <p class="text-sm font-medium text-red-800 dark:text-red-200">
+                                        <x-heroicon-o-folder class="w-4 h-4 inline-block mr-1" />
+                                        {{ $folder === '_root' ? 'Archive Structure' : $folder }}
+                                    </p>
+                                    <ul class="mt-2 space-y-1">
+                                        @foreach($errors as $error)
+                                            <li class="text-xs text-red-700 dark:text-red-300 flex items-start">
+                                                <x-heroicon-o-exclamation-triangle class="w-3 h-3 mr-1 mt-0.5 flex-shrink-0" />
+                                                {{ $error }}
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endforeach
+                        </div>
+                        <p class="mt-3 ml-7 text-xs text-red-600 dark:text-red-400">
+                            Please fix the issues above and upload a corrected archive.
+                        </p>
+                    </div>
+                @endif
+            @endif
+
             {{-- Submit button --}}
             <div class="mt-6">
                 <button type="button"
                         wire:click="submit"
                         wire:loading.attr="disabled"
+                        @if($validating) disabled @endif
                         class="w-full px-4 py-3 bg-primary-600 text-white rounded-lg font-medium
                                hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
                                disabled:opacity-50 disabled:cursor-not-allowed
                                transition-colors duration-200">
-                    <span wire:loading.remove wire:target="submit">Upload and Process</span>
-                    <span wire:loading wire:target="submit" class="flex items-center justify-center">
-                        <x-filament::loading-indicator class="h-5 w-5 mr-2" />
-                        Processing...
-                    </span>
+                    @if($validating)
+                        <span class="flex items-center justify-center">
+                            <x-filament::loading-indicator class="h-5 w-5 mr-2" />
+                            Validating...
+                        </span>
+                    @else
+                        <span wire:loading.remove wire:target="submit">Validate and Process</span>
+                        <span wire:loading wire:target="submit" class="flex items-center justify-center">
+                            <x-filament::loading-indicator class="h-5 w-5 mr-2" />
+                            Processing...
+                        </span>
+                    @endif
                 </button>
             </div>
         @endif

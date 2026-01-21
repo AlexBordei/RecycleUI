@@ -37,6 +37,16 @@ class Upload extends Page
     public bool $previewLoading = false;
 
     /**
+     * Validation result from ZipValidatorService.
+     */
+    public ?array $validationResult = null;
+
+    /**
+     * Whether validation is in progress.
+     */
+    public bool $validating = false;
+
+    /**
      * Validation rules for the archive file.
      */
     protected $rules = [
@@ -102,6 +112,7 @@ class Upload extends Page
     {
         $this->archive = null;
         $this->preview = [];
+        $this->validationResult = null;
         $this->resetValidation('archive');
     }
 
@@ -120,13 +131,37 @@ class Upload extends Page
     public function submit(): void
     {
         $this->validate();
+        $this->validating = true;
+        $this->validationResult = null;
 
-        // Phase 3 will implement actual zip validation
-        // For now, just show success notification
-        Notification::make()
-            ->title('File received')
-            ->body('Archive uploaded successfully. Validation coming in Phase 3.')
-            ->success()
-            ->send();
+        try {
+            $validator = new ZipValidatorService();
+            $this->validationResult = $validator->extractAndValidate($this->archive);
+
+            if ($this->validationResult['valid']) {
+                // Valid zip - Phase 4 will handle extraction
+                Notification::make()
+                    ->title('Validation Passed')
+                    ->body('All '.count($this->validationResult['structure']).' folders contain the required files.')
+                    ->success()
+                    ->send();
+            } else {
+                // Invalid zip - show errors
+                $errorCount = array_sum(array_map('count', $this->validationResult['errors']));
+                Notification::make()
+                    ->title('Validation Failed')
+                    ->body("Found {$errorCount} issue(s) in ".count($this->validationResult['errors']).' folder(s). See details below.')
+                    ->danger()
+                    ->send();
+            }
+        } catch (\Exception $e) {
+            Notification::make()
+                ->title('Validation Error')
+                ->body('Failed to validate zip: '.$e->getMessage())
+                ->danger()
+                ->send();
+        }
+
+        $this->validating = false;
     }
 }
