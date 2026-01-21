@@ -23,14 +23,14 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **UPLD-05**: System rejects oversized files with clear limit shown
 - [x] **UPLD-06**: User can cancel in-progress upload
 - [x] **UPLD-07**: User can remove/replace file before submission
-- [ ] **UPLD-08**: User can preview zip contents (file listing) before submission
+- [x] **UPLD-08**: User can preview zip contents (file listing) before submission
 
 ### Validation Engine
 
-- [ ] **VALD-01**: System validates each folder contains 9 required files (ANEXA.pdf, AVIZ.pdf, Fata.jpeg, Inc1.jpeg, Inc2.jpeg, Km.jpeg, Lateral.jpeg, Spate.jpeg, Excel)
-- [ ] **VALD-02**: System validates Excel filename matches pattern `Iesiri_export_robotel_siatd_intern_*`
-- [ ] **VALD-03**: System shows detailed error messages identifying exactly which folder is missing which file
-- [ ] **VALD-04**: System rejects entire zip if any folder is invalid
+- [x] **VALD-01**: System validates each folder contains 9 required files (ANEXA.pdf, AVIZ.pdf, Fata.jpeg, Inc1.jpeg, Inc2.jpeg, Km.jpeg, Lateral.jpeg, Spate.jpeg, Excel)
+- [x] **VALD-02**: System validates Excel filename matches pattern `Iesiri_export_robotel_siatd_intern_*`
+- [x] **VALD-03**: System shows detailed error messages identifying exactly which folder is missing which file
+- [x] **VALD-04**: System rejects entire zip if any folder is invalid
 
 ### File Extraction
 
@@ -98,11 +98,11 @@ Which phases cover which requirements. Updated by create-roadmap.
 | UPLD-05 | 2 - File Upload Core | Complete |
 | UPLD-06 | 2 - File Upload Core | Complete |
 | UPLD-07 | 2 - File Upload Core | Complete |
-| UPLD-08 | 3 - Zip Validation Engine | Pending |
-| VALD-01 | 3 - Zip Validation Engine | Pending |
-| VALD-02 | 3 - Zip Validation Engine | Pending |
-| VALD-03 | 3 - Zip Validation Engine | Pending |
-| VALD-04 | 3 - Zip Validation Engine | Pending |
+| UPLD-08 | 3 - Zip Validation Engine | Complete |
+| VALD-01 | 3 - Zip Validation Engine | Complete |
+| VALD-02 | 3 - Zip Validation Engine | Complete |
+| VALD-03 | 3 - Zip Validation Engine | Complete |
+| VALD-04 | 3 - Zip Validation Engine | Complete |
 | EXTR-01 | 4 - File Extraction | Pending |
 | EXTR-02 | 4 - File Extraction | Pending |
 | EXTR-03 | 7 - Queue Processing | Pending |
@@ -122,4 +122,4 @@ Which phases cover which requirements. Updated by create-roadmap.
 
 ---
 *Requirements defined: 2026-01-21*
-*Last updated: 2026-01-21 - Phase 2 requirements complete (UPLD-01 through UPLD-07)*
+*Last updated: 2026-01-21 - Phase 3 requirements complete (UPLD-08, VALD-01 through VALD-04)*
