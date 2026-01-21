@@ -60,6 +60,40 @@ return [
             'report' => false,
         ],
 
+        /*
+        |--------------------------------------------------------------------------
+        | SIATD Processing Disk
+        |--------------------------------------------------------------------------
+        |
+        | This disk is used for files that are being actively processed.
+        | User uploads are extracted here for validation and processing.
+        | Path format: [User Full Name]/[DD-MM-YYYY HH:mm]/
+        |
+        */
+
+        'processing' => [
+            'driver' => 'local',
+            'root' => env('SIATD_PROCESSING_PATH', storage_path('app/siatd/processing')),
+            'throw' => false,
+        ],
+
+        /*
+        |--------------------------------------------------------------------------
+        | SIATD Done Disk
+        |--------------------------------------------------------------------------
+        |
+        | This disk is used for files that have been successfully processed.
+        | Files are moved here after validation and processing is complete.
+        | Path format: [User Full Name]/[datetime]/
+        |
+        */
+
+        'done' => [
+            'driver' => 'local',
+            'root' => env('SIATD_DONE_PATH', storage_path('app/siatd/done')),
+            'throw' => false,
+        ],
+
     ],
 
     /*
