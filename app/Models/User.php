@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Notifications\ResetPasswordNotification;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, CanResetPassword
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -58,5 +60,29 @@ class User extends Authenticatable implements FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->is_active;
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        // Only send notification if user has an email address
+        if ($this->email) {
+            $this->notify(new ResetPasswordNotification($token));
+        }
+    }
+
+    /**
+     * Get the email address that should be used for password reset.
+     *
+     * @return string
+     */
+    public function getEmailForPasswordReset(): string
+    {
+        return $this->email ?? '';
     }
 }
