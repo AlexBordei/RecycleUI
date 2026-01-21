@@ -35,6 +35,7 @@
 
 ## Phase 2: File Upload Core
 
+**Status:** In Progress (1/2 plans complete)
 **Goal:** Drag-drop upload interface with progress and basic validation.
 
 **Delivers:**
@@ -233,4 +234,4 @@ Phase 8 (Polish) ←── final verification
 ---
 
 *Roadmap created: 2026-01-21*
-*Last updated: 2026-01-21 - Phase 1 complete*
+*Last updated: 2026-01-21 - Phase 2 plan 1 complete*
