@@ -87,38 +87,38 @@ Which phases cover which requirements. Updated by create-roadmap.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | TBD | Pending |
-| AUTH-02 | TBD | Pending |
-| AUTH-03 | TBD | Pending |
-| AUTH-04 | TBD | Pending |
-| UPLD-01 | TBD | Pending |
-| UPLD-02 | TBD | Pending |
-| UPLD-03 | TBD | Pending |
-| UPLD-04 | TBD | Pending |
-| UPLD-05 | TBD | Pending |
-| UPLD-06 | TBD | Pending |
-| UPLD-07 | TBD | Pending |
-| UPLD-08 | TBD | Pending |
-| VALD-01 | TBD | Pending |
-| VALD-02 | TBD | Pending |
-| VALD-03 | TBD | Pending |
-| VALD-04 | TBD | Pending |
-| EXTR-01 | TBD | Pending |
-| EXTR-02 | TBD | Pending |
-| EXTR-03 | TBD | Pending |
-| EXTR-04 | TBD | Pending |
-| HIST-01 | TBD | Pending |
-| HIST-02 | TBD | Pending |
-| ADMN-01 | TBD | Pending |
-| ADMN-02 | TBD | Pending |
-| ADMN-03 | TBD | Pending |
-| ADMN-04 | TBD | Pending |
-| ADMN-05 | TBD | Pending |
+| AUTH-01 | 1 - Foundation | Pending |
+| AUTH-02 | 1 - Foundation | Pending |
+| AUTH-03 | 1 - Foundation | Pending |
+| AUTH-04 | 1 - Foundation | Pending |
+| UPLD-01 | 2 - File Upload Core | Pending |
+| UPLD-02 | 2 - File Upload Core | Pending |
+| UPLD-03 | 2 - File Upload Core | Pending |
+| UPLD-04 | 2 - File Upload Core | Pending |
+| UPLD-05 | 2 - File Upload Core | Pending |
+| UPLD-06 | 2 - File Upload Core | Pending |
+| UPLD-07 | 2 - File Upload Core | Pending |
+| UPLD-08 | 3 - Zip Validation Engine | Pending |
+| VALD-01 | 3 - Zip Validation Engine | Pending |
+| VALD-02 | 3 - Zip Validation Engine | Pending |
+| VALD-03 | 3 - Zip Validation Engine | Pending |
+| VALD-04 | 3 - Zip Validation Engine | Pending |
+| EXTR-01 | 4 - File Extraction | Pending |
+| EXTR-02 | 4 - File Extraction | Pending |
+| EXTR-03 | 7 - Queue Processing | Pending |
+| EXTR-04 | 7 - Queue Processing | Pending |
+| HIST-01 | 5 - History & Dashboard | Pending |
+| HIST-02 | 5 - History & Dashboard | Pending |
+| ADMN-01 | 6 - Admin Panel | Pending |
+| ADMN-02 | 6 - Admin Panel | Pending |
+| ADMN-03 | 6 - Admin Panel | Pending |
+| ADMN-04 | 6 - Admin Panel | Pending |
+| ADMN-05 | 6 - Admin Panel | Pending |
 
 **Coverage:**
 - v1 requirements: 27 total
-- Mapped to phases: 0 (pending create-roadmap)
-- Unmapped: 27
+- Mapped to phases: 27 (100%)
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-01-21*
