@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Services\ZipValidatorService;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Livewire\WithFileUploads;
@@ -24,6 +25,16 @@ class Upload extends Page
      * The uploaded archive file.
      */
     public $archive;
+
+    /**
+     * Preview of zip structure (folder -> files).
+     */
+    public array $preview = [];
+
+    /**
+     * Whether preview is currently loading.
+     */
+    public bool $previewLoading = false;
 
     /**
      * Validation rules for the archive file.
@@ -52,6 +63,36 @@ class Upload extends Page
     public function updatedArchive(): void
     {
         $this->validateOnly('archive');
+
+        // Generate preview if file is valid
+        if (! $this->getErrorBag()->has('archive') && $this->archive) {
+            $this->generatePreview();
+        } else {
+            $this->preview = [];
+        }
+    }
+
+    /**
+     * Generate preview of zip contents.
+     */
+    public function generatePreview(): void
+    {
+        if (! $this->archive) {
+            return;
+        }
+
+        $this->previewLoading = true;
+
+        try {
+            $validator = new ZipValidatorService();
+            $validator->extract($this->archive);
+            $this->preview = $validator->getStructure();
+        } catch (\Exception $e) {
+            $this->addError('archive', 'Failed to read zip contents: '.$e->getMessage());
+            $this->preview = [];
+        }
+
+        $this->previewLoading = false;
     }
 
     /**
@@ -60,6 +101,7 @@ class Upload extends Page
     public function removeFile(): void
     {
         $this->archive = null;
+        $this->preview = [];
         $this->resetValidation('archive');
     }
 

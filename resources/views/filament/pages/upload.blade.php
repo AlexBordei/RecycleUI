@@ -103,6 +103,38 @@
                 </div>
             </div>
 
+            {{-- Zip contents preview --}}
+            @if(!empty($preview))
+                <div class="mt-4 p-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
+                    <h3 class="text-sm font-medium text-gray-900 dark:text-white mb-3">
+                        <x-heroicon-o-folder-open class="w-4 h-4 inline-block mr-1" />
+                        Zip Contents Preview
+                    </h3>
+                    <div class="space-y-3 max-h-64 overflow-y-auto">
+                        @foreach($preview as $folder => $files)
+                            <div class="pl-2 border-l-2 border-gray-200 dark:border-gray-700">
+                                <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <x-heroicon-o-folder class="w-4 h-4 inline-block mr-1 text-yellow-500" />
+                                    {{ $folder }}
+                                    <span class="text-xs text-gray-500">({{ count($files) }} files)</span>
+                                </p>
+                                <ul class="mt-1 ml-5 text-xs text-gray-500 dark:text-gray-400 space-y-0.5">
+                                    @foreach($files as $file)
+                                        <li class="flex items-center">
+                                            <x-heroicon-o-document class="w-3 h-3 mr-1 flex-shrink-0" />
+                                            {{ $file }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endforeach
+                    </div>
+                    <p class="mt-3 text-xs text-gray-500 dark:text-gray-400">
+                        {{ count($preview) }} folder(s) found
+                    </p>
+                </div>
+            @endif
+
             {{-- Submit button --}}
             <div class="mt-6">
                 <button type="button"
