@@ -9,11 +9,11 @@
 ## Current Position
 
 Phase: 1 of 8 (Foundation)
-Plan: 1 of 3 in current phase
+Plan: 2 of 3 in current phase
 Status: In progress
-Last activity: 2026-01-21 - Completed 01-01-PLAN.md
+Last activity: 2026-01-21 - Completed 01-02-PLAN.md
 
-Progress: ░░░░░░░░░░ 4% (1/24 plans estimated)
+Progress: ████░░░░░░ 8% (2/24 plans estimated)
 
 ---
 
@@ -21,7 +21,7 @@ Progress: ░░░░░░░░░░ 4% (1/24 plans estimated)
 
 | Phase | Name | Status | Plans |
 |-------|------|--------|-------|
-| 1 | Foundation | In Progress | 1/3 |
+| 1 | Foundation | In Progress | 2/3 |
 | 2 | File Upload Core | Pending | 0/0 |
 | 3 | Zip Validation Engine | Pending | 0/0 |
 | 4 | File Extraction & Storage | Pending | 0/0 |
@@ -46,10 +46,13 @@ Progress: ░░░░░░░░░░ 4% (1/24 plans estimated)
 | Username vs Full Name distinction | Username for login, Full Name for paths | Requirements |
 | Laravel 11.48.0 | Exceeds CVE-2025-27515 requirement (11.44.1+) | 01-01 |
 | MySQL database name: recycleui | Matches project name for clarity | 01-01 |
+| Username as primary login field | Email nullable for password reset only | 01-02 |
+| is_active controls panel access | canAccessPanel() checks is_active flag | 01-02 |
 
 ### Technical Context
 
-- **Stack:** Laravel 11.48.0 / MySQL / Filament v3
+- **Stack:** Laravel 11.48.0 / MySQL / Filament v3.3.47
+- **Auth:** Username-based login, custom Filament Login page
 - **File Schema:** 9 files per folder (ANEXA.pdf, AVIZ.pdf, Fata.jpeg, Inc1.jpeg, Inc2.jpeg, Km.jpeg, Lateral.jpeg, Spate.jpeg, Excel)
 - **Excel Pattern:** `Iesiri_export_robotel_siatd_intern_*`
 - **Processing Path:** `~/Desktop/SIATD/Processing/[User Full Name]/[DD-MM-YYYY HH:mm]/`
@@ -65,15 +68,16 @@ Progress: ░░░░░░░░░░ 4% (1/24 plans estimated)
 ### Open Issues
 
 - User needs to configure MySQL credentials (DB_USERNAME, DB_PASSWORD in .env)
+- User needs to run migrations and AdminUserSeeder
 
 ---
 
 ## Session Continuity
 
 **Last session:** 2026-01-21
-**Stopped at:** Completed 01-01-PLAN.md
+**Stopped at:** Completed 01-02-PLAN.md
 **Resume file:** None
-**Next action:** Execute 01-02-PLAN.md (Filament installation)
+**Next action:** Execute 01-03-PLAN.md (Password reset with Resend API)
 
 ---
 
