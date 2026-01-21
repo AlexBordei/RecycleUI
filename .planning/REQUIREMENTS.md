@@ -9,10 +9,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Authentication
 
-- [ ] **AUTH-01**: User can login with username and password
-- [ ] **AUTH-02**: User can logout and end session
-- [ ] **AUTH-03**: User session persists across browser refresh
-- [ ] **AUTH-04**: User can reset password via email link (Resend API)
+- [x] **AUTH-01**: User can login with username and password
+- [x] **AUTH-02**: User can logout and end session
+- [x] **AUTH-03**: User session persists across browser refresh
+- [x] **AUTH-04**: User can reset password via email link (Resend API)
 
 ### File Upload
 
@@ -87,10 +87,10 @@ Which phases cover which requirements. Updated by create-roadmap.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | 1 - Foundation | Pending |
-| AUTH-02 | 1 - Foundation | Pending |
-| AUTH-03 | 1 - Foundation | Pending |
-| AUTH-04 | 1 - Foundation | Pending |
+| AUTH-01 | 1 - Foundation | Complete |
+| AUTH-02 | 1 - Foundation | Complete |
+| AUTH-03 | 1 - Foundation | Complete |
+| AUTH-04 | 1 - Foundation | Complete |
 | UPLD-01 | 2 - File Upload Core | Pending |
 | UPLD-02 | 2 - File Upload Core | Pending |
 | UPLD-03 | 2 - File Upload Core | Pending |
@@ -122,4 +122,4 @@ Which phases cover which requirements. Updated by create-roadmap.
 
 ---
 *Requirements defined: 2026-01-21*
-*Last updated: 2026-01-21 after initial definition*
+*Last updated: 2026-01-21 - Phase 1 requirements complete (AUTH-01 through AUTH-04)*
