@@ -10,7 +10,7 @@
 
 | Phase | Name | Status | Plans |
 |-------|------|--------|-------|
-| 1 | Foundation | Pending | 0/0 |
+| 1 | Foundation | Planning | 0/3 |
 | 2 | File Upload Core | Pending | 0/0 |
 | 3 | Zip Validation Engine | Pending | 0/0 |
 | 4 | File Extraction & Storage | Pending | 0/0 |
