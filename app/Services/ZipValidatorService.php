@@ -129,6 +129,138 @@ class ZipValidatorService
     }
 
     /**
+     * Validate the extracted zip contents.
+     *
+     * @return array{valid: bool, errors: array, structure: array}
+     */
+    public function validate(): array
+    {
+        if (! $this->tempPath || ! File::isDirectory($this->tempPath)) {
+            throw new \RuntimeException('No extracted content to validate. Call extract() first.');
+        }
+
+        $this->errors = [];
+        $this->structure = [];
+
+        // Get all top-level directories (transport record folders)
+        $folders = File::directories($this->tempPath);
+
+        if (empty($folders)) {
+            $this->errors['_root'] = ['Zip archive contains no folders. Expected folders with transport records.'];
+
+            return $this->getResult();
+        }
+
+        foreach ($folders as $folder) {
+            $this->validateFolder($folder);
+        }
+
+        return $this->getResult();
+    }
+
+    /**
+     * Validate a single folder against the required schema.
+     */
+    protected function validateFolder(string $folderPath): void
+    {
+        $folderName = basename($folderPath);
+        $files = File::files($folderPath);
+        $fileNames = array_map(fn ($f) => $f->getFilename(), $files);
+
+        $this->structure[$folderName] = [
+            'files' => $fileNames,
+            'valid' => true,
+            'missing' => [],
+            'excel' => null,
+        ];
+
+        $folderErrors = [];
+
+        // Check each required file
+        foreach ($this->requiredFiles as $requiredFile) {
+            if (! in_array($requiredFile, $fileNames, true)) {
+                $folderErrors[] = "Missing required file: {$requiredFile}";
+                $this->structure[$folderName]['missing'][] = $requiredFile;
+            }
+        }
+
+        // Check for Excel file matching pattern
+        $excelFound = false;
+        foreach ($fileNames as $fileName) {
+            if (preg_match($this->excelPattern, $fileName)) {
+                $excelFound = true;
+                $this->structure[$folderName]['excel'] = $fileName;
+                break;
+            }
+        }
+
+        if (! $excelFound) {
+            $folderErrors[] = 'Missing Excel file matching pattern: Iesiri_export_robotel_siatd_intern_DD_MM_YYYY_HH_MM_SS.xlsx';
+            $this->structure[$folderName]['missing'][] = 'Excel (Iesiri_export_robotel_siatd_intern_*.xlsx)';
+        }
+
+        if (! empty($folderErrors)) {
+            $this->errors[$folderName] = $folderErrors;
+            $this->structure[$folderName]['valid'] = false;
+        }
+    }
+
+    /**
+     * Get the validation result.
+     *
+     * @return array{valid: bool, errors: array, structure: array}
+     */
+    protected function getResult(): array
+    {
+        return [
+            'valid' => empty($this->errors),
+            'errors' => $this->errors,
+            'structure' => $this->structure,
+        ];
+    }
+
+    /**
+     * Get just the structure for preview (without full validation).
+     */
+    public function getStructure(): array
+    {
+        if (! $this->tempPath || ! File::isDirectory($this->tempPath)) {
+            throw new \RuntimeException('No extracted content. Call extract() first.');
+        }
+
+        $structure = [];
+        $folders = File::directories($this->tempPath);
+
+        foreach ($folders as $folder) {
+            $folderName = basename($folder);
+            $files = File::files($folder);
+            $structure[$folderName] = array_map(fn ($f) => $f->getFilename(), $files);
+        }
+
+        return $structure;
+    }
+
+    /**
+     * Convenience method to extract and validate in one call.
+     *
+     * @return array{valid: bool, errors: array, structure: array}
+     */
+    public function extractAndValidate(UploadedFile $file): array
+    {
+        $this->extract($file);
+
+        return $this->validate();
+    }
+
+    /**
+     * Get the validation errors.
+     */
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
+
+    /**
      * Get human-readable error message for ZipArchive error codes.
      */
     protected function getZipError(int $code): string
