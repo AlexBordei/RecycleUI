@@ -1,7 +1,7 @@
 <x-filament-panels::page>
-    <div class="max-w-2xl mx-auto">
-        <div class="upload-zone"
-             x-data="{ isDragging: false, progress: 0, uploading: false }"
+    <div class="space-y-6">
+        {{-- Upload Zone Section --}}
+        <div x-data="{ isDragging: false, progress: 0, uploading: false }"
              x-on:dragover.prevent="isDragging = true"
              x-on:dragleave.prevent="isDragging = false"
              x-on:drop.prevent="isDragging = false; $refs.fileInput.files = $event.dataTransfer.files; $refs.fileInput.dispatchEvent(new Event('change'))"
@@ -10,204 +10,243 @@
              x-on:livewire-upload-error="uploading = false"
              x-on:livewire-upload-progress="progress = $event.detail.progress">
 
-            {{-- Visual drop zone --}}
-            <div :class="{ 'border-primary-500 bg-primary-50 dark:bg-primary-950': isDragging }"
-                 class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-12 text-center transition-colors duration-200">
+            <div :class="{
+                    'border-primary-500 bg-primary-50 dark:bg-primary-950/50 scale-[1.02]': isDragging,
+                    'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900': !isDragging
+                 }"
+                 class="relative border-2 border-dashed rounded-2xl p-12 text-center transition-all duration-300 ease-out">
 
-                <x-heroicon-o-cloud-arrow-up class="w-12 h-12 mx-auto text-gray-400 dark:text-gray-500" />
-
-                <p class="mt-4 text-lg font-medium text-gray-900 dark:text-white">
-                    Drag and drop your zip file here
-                </p>
-                <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                    or
-                </p>
-
-                {{-- Click to upload button (fallback) --}}
-                <label class="mt-4 inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg cursor-pointer hover:bg-primary-700 transition-colors duration-200">
-                    <span>Browse Files</span>
-                    <input type="file"
-                           wire:model="archive"
-                           x-ref="fileInput"
-                           accept=".zip,application/zip,application/x-zip-compressed"
-                           class="hidden" />
-                </label>
-
-                <p class="mt-2 text-xs text-gray-400 dark:text-gray-500">
-                    Accepted: .zip files up to 100MB
-                </p>
-            </div>
-
-            {{-- Progress bar during upload --}}
-            <div x-show="uploading" x-cloak class="mt-4">
-                <div class="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm text-gray-600 dark:text-gray-300">Uploading...</span>
-                        <span class="text-sm text-gray-600 dark:text-gray-300" x-text="progress + '%'"></span>
+                <div class="flex flex-col items-center justify-center space-y-4">
+                    <div :class="{ 'scale-110 text-primary-500': isDragging }"
+                         class="transition-transform duration-300">
+                        <x-heroicon-o-cloud-arrow-up class="w-16 h-16 text-gray-400 dark:text-gray-500" />
                     </div>
-                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                        <div class="bg-primary-600 h-2 rounded-full transition-all duration-300"
-                             :style="'width: ' + progress + '%'"></div>
+
+                    <div class="space-y-2">
+                        <p class="text-lg font-semibold text-gray-900 dark:text-white">
+                            Drag and drop your zip file here
+                        </p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            or click the button below to browse
+                        </p>
                     </div>
-                    {{-- Cancel upload button --}}
-                    <button type="button"
-                            x-on:click="$wire.cancelUpload('archive')"
-                            class="mt-3 text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
-                        Cancel upload
-                    </button>
-                </div>
-            </div>
-        </div>
 
-        {{-- Validation error display --}}
-        @error('archive')
-            <div class="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                <div class="flex items-center">
-                    <x-heroicon-o-exclamation-circle class="w-5 h-5 text-red-500 dark:text-red-400 mr-2 flex-shrink-0" />
-                    <span class="text-sm text-red-700 dark:text-red-300">{{ $message }}</span>
-                </div>
-            </div>
-        @enderror
+                    <label class="inline-flex items-center gap-2 px-4 py-2 bg-primary-600 text-white text-sm font-medium rounded-lg cursor-pointer hover:bg-primary-700 active:bg-primary-800 transition-colors">
+                        <x-heroicon-o-folder-open class="w-4 h-4" />
+                        <span>Browse Files</span>
+                        <input type="file"
+                               wire:model="archive"
+                               x-ref="fileInput"
+                               accept=".zip,application/zip,application/x-zip-compressed"
+                               class="hidden" />
+                    </label>
 
-        {{-- Selected file display (only show if no validation errors) --}}
-        @if($archive && !$errors->has('archive'))
-            <div class="mt-4 p-4 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center min-w-0">
-                        <x-heroicon-o-document class="w-8 h-8 text-gray-400 dark:text-gray-500 flex-shrink-0" />
-                        <div class="ml-3 min-w-0">
-                            <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
-                                {{ $archive->getClientOriginalName() }}
-                            </p>
-                            <p class="text-xs text-gray-500 dark:text-gray-400">
-                                {{ number_format($archive->getSize() / 1024 / 1024, 2) }} MB
-                            </p>
+                    <p class="text-xs text-gray-400 dark:text-gray-500">
+                        Accepted: .zip files up to 100MB
+                    </p>
+                </div>
+
+                {{-- Progress overlay --}}
+                <div x-show="uploading"
+                     x-cloak
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0"
+                     x-transition:enter-end="opacity-100"
+                     class="absolute inset-0 bg-white/90 dark:bg-gray-900/90 rounded-2xl flex flex-col items-center justify-center">
+                    <div class="w-48 space-y-3">
+                        <div class="flex items-center justify-between text-sm">
+                            <span class="text-gray-600 dark:text-gray-300 font-medium">Uploading...</span>
+                            <span class="text-primary-600 dark:text-primary-400 font-semibold" x-text="progress + '%'"></span>
                         </div>
-                    </div>
-                    <div class="flex items-center space-x-3 ml-4">
-                        {{-- Replace button --}}
-                        <label class="text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-300 cursor-pointer">
-                            Replace
-                            <input type="file"
-                                   wire:model="archive"
-                                   accept=".zip,application/zip,application/x-zip-compressed"
-                                   class="hidden" />
-                        </label>
-                        {{-- Remove button --}}
+                        <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                            <div class="h-full bg-primary-600 rounded-full transition-all duration-300 ease-out"
+                                 :style="'width: ' + progress + '%'"></div>
+                        </div>
                         <button type="button"
-                                wire:click="removeFile"
-                                class="text-sm text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300">
-                            Remove
+                                x-on:click="$wire.cancelUpload('archive')"
+                                class="w-full text-xs text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-medium">
+                            Cancel
                         </button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            {{-- Zip contents preview --}}
-            @if(!empty($preview))
-                <div class="mt-4 p-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg">
-                    <h3 class="text-sm font-medium text-gray-900 dark:text-white mb-3">
-                        <x-heroicon-o-folder-open class="w-4 h-4 inline-block mr-1" />
-                        Zip Contents Preview
-                    </h3>
-                    <div class="space-y-3 max-h-64 overflow-y-auto">
-                        @foreach($preview as $folder => $files)
-                            <div class="pl-2 border-l-2 border-gray-200 dark:border-gray-700">
-                                <p class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    <x-heroicon-o-folder class="w-4 h-4 inline-block mr-1 text-yellow-500" />
-                                    {{ $folder }}
-                                    <span class="text-xs text-gray-500">({{ count($files) }} files)</span>
-                                </p>
-                                <ul class="mt-1 ml-5 text-xs text-gray-500 dark:text-gray-400 space-y-0.5">
-                                    @foreach($files as $file)
-                                        <li class="flex items-center">
-                                            <x-heroicon-o-document class="w-3 h-3 mr-1 flex-shrink-0" />
-                                            {{ $file }}
-                                        </li>
-                                    @endforeach
-                                </ul>
+        {{-- Validation error --}}
+        @error('archive')
+            <div class="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
+                <x-heroicon-s-exclamation-circle class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                <p class="text-sm text-red-700 dark:text-red-300">{{ $message }}</p>
+            </div>
+        @enderror
+
+        {{-- Selected file and preview --}}
+        @if($archive && !$errors->has('archive'))
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {{-- Left column: File info + Actions --}}
+                <div class="space-y-4">
+                    {{-- File info card --}}
+                    <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-4">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0 w-12 h-12 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
+                                <x-heroicon-o-document-arrow-up class="w-6 h-6 text-primary-600 dark:text-primary-400" />
                             </div>
-                        @endforeach
-                    </div>
-                    <p class="mt-3 text-xs text-gray-500 dark:text-gray-400">
-                        {{ count($preview) }} folder(s) found
-                    </p>
-                </div>
-            @endif
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                    {{ $archive->getClientOriginalName() }}
+                                </p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                    {{ number_format($archive->getSize() / 1024 / 1024, 2) }} MB
+                                </p>
+                            </div>
+                        </div>
 
-            {{-- Validation results --}}
-            @if($validationResult)
-                @if($validationResult['valid'])
-                    <div class="mt-4 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg">
-                        <div class="flex items-center">
-                            <x-heroicon-o-check-circle class="w-5 h-5 text-green-500 mr-2 flex-shrink-0" />
-                            <span class="text-sm font-medium text-green-700 dark:text-green-300">
-                                Validation Passed - All folders contain required files
-                            </span>
-                        </div>
-                        <div class="mt-3 ml-7">
-                            <p class="text-xs text-green-600 dark:text-green-400">
-                                {{ count($validationResult['structure']) }} folder(s) validated successfully.
-                                Ready for extraction in Phase 4.
-                            </p>
+                        <div class="flex items-center gap-3 mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+                            <label class="flex-1 text-center text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium cursor-pointer py-2 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors">
+                                Replace
+                                <input type="file"
+                                       wire:model="archive"
+                                       accept=".zip,application/zip,application/x-zip-compressed"
+                                       class="hidden" />
+                            </label>
+                            <div class="w-px h-6 bg-gray-200 dark:bg-gray-700"></div>
+                            <button type="button"
+                                    wire:click="removeFile"
+                                    class="flex-1 text-center text-sm text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 font-medium py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
+                                Remove
+                            </button>
                         </div>
                     </div>
-                @else
-                    <div class="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
-                        <div class="flex items-center">
-                            <x-heroicon-o-x-circle class="w-5 h-5 text-red-500 mr-2 flex-shrink-0" />
-                            <span class="text-sm font-medium text-red-700 dark:text-red-300">
-                                Validation Failed - Missing required files
-                            </span>
-                        </div>
-                        <div class="mt-3 space-y-3">
-                            @foreach($validationResult['errors'] as $folder => $errors)
-                                <div class="ml-7 p-3 bg-red-100 dark:bg-red-900/30 rounded">
-                                    <p class="text-sm font-medium text-red-800 dark:text-red-200">
-                                        <x-heroicon-o-folder class="w-4 h-4 inline-block mr-1" />
-                                        {{ $folder === '_root' ? 'Archive Structure' : $folder }}
-                                    </p>
-                                    <ul class="mt-2 space-y-1">
-                                        @foreach($errors as $error)
-                                            <li class="text-xs text-red-700 dark:text-red-300 flex items-start">
-                                                <x-heroicon-o-exclamation-triangle class="w-3 h-3 mr-1 mt-0.5 flex-shrink-0" />
-                                                {{ $error }}
-                                            </li>
-                                        @endforeach
-                                    </ul>
+
+                    {{-- Validation status --}}
+                    @if($validationResult)
+                        @if($validationResult['valid'])
+                            @if(!$extractionResult || !$extractionResult['success'])
+                                <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex-shrink-0 w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                                            <x-heroicon-s-check class="w-5 h-5 text-green-600 dark:text-green-400" />
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium text-green-800 dark:text-green-200">Validation Passed</p>
+                                            <p class="text-xs text-green-600 dark:text-green-400 mt-0.5">
+                                                {{ count($validationResult['structure']) }} folder(s) validated
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
-                            @endforeach
+                            @endif
+                        @else
+                            <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
+                                <div class="flex items-start gap-3 mb-4">
+                                    <div class="flex-shrink-0 w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+                                        <x-heroicon-s-x-mark class="w-5 h-5 text-red-600 dark:text-red-400" />
+                                    </div>
+                                    <div>
+                                        <p class="text-sm font-medium text-red-800 dark:text-red-200">Validation Failed</p>
+                                        <p class="text-xs text-red-600 dark:text-red-400 mt-0.5">Missing required files</p>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-3 max-h-64 overflow-y-auto">
+                                    @foreach($validationResult['errors'] as $folder => $errors)
+                                        <div class="bg-red-100/50 dark:bg-red-900/30 rounded-lg p-3">
+                                            <p class="text-xs font-medium text-red-800 dark:text-red-200 flex items-center gap-1.5">
+                                                <x-heroicon-o-folder class="w-4 h-4" />
+                                                {{ $folder === '_root' ? 'Archive Structure' : $folder }}
+                                            </p>
+                                            <ul class="mt-2 space-y-1">
+                                                @foreach($errors as $error)
+                                                    <li class="text-xs text-red-700 dark:text-red-300 flex items-start gap-1.5 pl-5">
+                                                        <x-heroicon-o-exclamation-triangle class="w-3 h-3 mt-0.5 flex-shrink-0" />
+                                                        {{ $error }}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    @endif
+
+                    {{-- Extraction success --}}
+                    @if($extractionResult && $extractionResult['success'])
+                        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4">
+                            <div class="flex items-start gap-3">
+                                <div class="flex-shrink-0 w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+                                    <x-heroicon-s-check-circle class="w-6 h-6 text-green-600 dark:text-green-400" />
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="text-sm font-medium text-green-800 dark:text-green-200">Upload Complete</p>
+                                    <p class="text-xs text-green-600 dark:text-green-400 mt-1">{{ $extractionResult['message'] }}</p>
+                                    <p class="text-xs text-green-600/80 dark:text-green-400/80 font-mono mt-2 truncate">
+                                        {{ $extractionResult['path'] }}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                        <p class="mt-3 ml-7 text-xs text-red-600 dark:text-red-400">
-                            Please fix the issues above and upload a corrected archive.
-                        </p>
+                    @endif
+
+                    {{-- Submit button --}}
+                    <button type="button"
+                            wire:click="submit"
+                            wire:loading.attr="disabled"
+                            @if($validating) disabled @endif
+                            class="w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary-600 text-white text-sm rounded-lg font-medium
+                                   hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+                                   disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        @if($validating)
+                            <x-filament::loading-indicator class="h-5 w-5" />
+                            <span>Validating...</span>
+                        @else
+                            <span wire:loading.remove wire:target="submit">
+                                <x-heroicon-o-arrow-up-tray class="w-5 h-5 inline-block mr-1" />
+                                Validate and Process
+                            </span>
+                            <span wire:loading wire:target="submit" class="flex items-center gap-2">
+                                <x-filament::loading-indicator class="h-5 w-5" />
+                                Processing...
+                            </span>
+                        @endif
+                    </button>
+                </div>
+
+                {{-- Right column: Zip contents preview --}}
+                @if(!empty($preview))
+                    <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden">
+                        <div class="px-4 py-3 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                            <h3 class="text-sm font-medium text-gray-900 dark:text-white flex items-center gap-2">
+                                <x-heroicon-o-folder-open class="w-4 h-4 text-gray-500" />
+                                Archive Contents
+                                <span class="ml-auto text-xs text-gray-500 dark:text-gray-400 font-normal">
+                                    {{ count($preview) }} folder(s)
+                                </span>
+                            </h3>
+                        </div>
+                        <div class="p-4 max-h-96 overflow-y-auto">
+                            <div class="space-y-3">
+                                @foreach($preview as $folder => $files)
+                                    <div class="group">
+                                        <div class="flex items-center gap-2 text-sm">
+                                            <x-heroicon-s-folder class="w-5 h-5 text-yellow-500 flex-shrink-0" />
+                                            <span class="font-medium text-gray-900 dark:text-white truncate">{{ $folder }}</span>
+                                            <span class="text-xs text-gray-400 dark:text-gray-500 ml-auto">({{ count($files) }})</span>
+                                        </div>
+                                        <ul class="mt-1.5 ml-7 space-y-1 border-l-2 border-gray-100 dark:border-gray-800 pl-3">
+                                            @foreach($files as $file)
+                                                <li class="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1.5">
+                                                    <x-heroicon-o-document class="w-3 h-3 flex-shrink-0 text-gray-400" />
+                                                    <span class="truncate">{{ $file }}</span>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                 @endif
-            @endif
-
-            {{-- Submit button --}}
-            <div class="mt-6">
-                <button type="button"
-                        wire:click="submit"
-                        wire:loading.attr="disabled"
-                        @if($validating) disabled @endif
-                        class="w-full px-4 py-3 bg-primary-600 text-white rounded-lg font-medium
-                               hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
-                               disabled:opacity-50 disabled:cursor-not-allowed
-                               transition-colors duration-200">
-                    @if($validating)
-                        <span class="flex items-center justify-center">
-                            <x-filament::loading-indicator class="h-5 w-5 mr-2" />
-                            Validating...
-                        </span>
-                    @else
-                        <span wire:loading.remove wire:target="submit">Validate and Process</span>
-                        <span wire:loading wire:target="submit" class="flex items-center justify-center">
-                            <x-filament::loading-indicator class="h-5 w-5 mr-2" />
-                            Processing...
-                        </span>
-                    @endif
-                </button>
             </div>
         @endif
     </div>
